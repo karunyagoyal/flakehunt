@@ -1,2 +1,2 @@
 # flakehunt
-Identify and Fix Flaky Test Cases
+AI-powered flaky test root-cause analyser for GitHub Actions
