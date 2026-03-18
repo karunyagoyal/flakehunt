@@ -1,0 +1,54 @@
+name: 'FlakeHunt — AI Flaky Test Root-Cause Fixer'
+description: 'Classifies why your tests are flaky and suggests a code fix. Works with Anthropic, Gemini, Groq, GitHub Models, or rule-based (no API).'
+author: 'Your Name'
+
+branding:
+  icon: 'zap'
+  color: 'purple'
+
+inputs:
+  model-provider:
+    description: |
+      AI provider to use for classification and fix generation.
+      Options:
+        anthropic  — Claude Haiku (classify) + Claude Sonnet (fix)  [paid, ~$0.01/run]
+        gemini     — Gemini 1.5 Flash                               [free tier available]
+        groq       — Llama 3.1 8B (classify) + Llama 70B (fix)     [free tier available]
+        github     — GPT-4o-mini (classify) + GPT-4o (fix)         [free with GitHub account]
+        rules-only — keyword matching, no API call                  [always free, no fix generation]
+    required: false
+    default: 'anthropic'
+
+  api-key:
+    description: |
+      API key for the chosen model-provider.
+        anthropic  → Anthropic API key  (console.anthropic.com)
+        gemini     → Google AI API key  (aistudio.google.com)
+        groq       → Groq API key       (console.groq.com)
+        github     → not needed — uses github-token automatically
+        rules-only → not needed
+    required: false
+
+  anthropic-api-key:
+    description: 'Deprecated — use api-key instead. Kept for backward compatibility.'
+    required: false
+
+  github-token:
+    description: 'GitHub token for reading logs and posting PR comments. Also used as the API key when model-provider is "github".'
+    required: true
+    default: ${{ github.token }}
+
+  confidence-threshold:
+    description: 'Minimum confidence score (0-100) required to post a fix. Skips fix generation below this threshold to save API cost.'
+    required: false
+    default: '70'
+
+outputs:
+  root-cause:
+    description: 'Classified root cause category (e.g. SELECTOR_FRAGILITY)'
+  confidence:
+    description: 'AI confidence score (0-100)'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

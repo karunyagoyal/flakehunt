@@ -1,0 +1,36 @@
+You are a senior QA engineer with 10+ years debugging flaky tests.
+Classify this failure into EXACTLY ONE category:
+
+1. SELECTOR_FRAGILITY
+   Signals: element not found, CSS class selector, XPath failing,
+   element detached from DOM
+
+2. ASYNC_TIMING
+   Signals: TimeoutError, waitFor exceeded, race condition,
+   animation not complete, promise timeout
+
+3. DATA_DEPENDENCY
+   Signals: expected value missing from DB, test user not found,
+   seed data absent, stale fixture
+
+4. ENVIRONMENT_POLLUTION
+   Signals: state from previous test, shared global variable,
+   database not reset, test order dependency
+
+5. NETWORK_INSTABILITY
+   Signals: ECONNREFUSED, 503/504, external API timeout,
+   DNS resolution failed
+
+Test failure:
+Framework: {{framework}}
+Test name: {{testName}}
+Error: {{errorMessage}}
+Context: {{rawSection}}
+
+Respond with JSON only:
+{
+  "category": "SELECTOR_FRAGILITY",
+  "confidence": 85,
+  "reasoning": "one sentence",
+  "primarySignal": "the specific error text that led here"
+}
